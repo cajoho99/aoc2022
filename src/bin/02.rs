@@ -1,5 +1,34 @@
+fn calculate_score(x: &char, y: &char) -> u32 {
+    // X > Rock 1
+    // Y > Paper 2 
+    // Z > Siccor 3 
+    match (x, y) {
+        ('A', 'X') => 4,
+        ('B', 'Y') => 5,
+        ('C', 'Z') => 6,
+        ('A', 'Y') => 8,
+        ('B', 'Z') => 9,
+        ('C', 'X') => 7,
+        (_, 'X') => 1,
+        (_, 'Y') => 2,
+        (_, 'Z') => 3,
+        _ => 0
+    }
+}
+
+
 pub fn part_one(input: &str) -> Option<u32> {
-    None
+    let l = input.lines();
+    let score_list: Vec<u32> = l.map(|s| {
+        let mut split = s.split(' ');
+        calculate_score(
+            &split.next().unwrap().chars().next().unwrap(), 
+            &split.next().unwrap().chars().next().unwrap()
+        )
+    }
+    ).collect();
+    print!("{:?}", score_list);
+    Some(score_list.iter().sum())
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
@@ -33,7 +62,6 @@ pub fn part_two(input: &str) -> Option<u32> {
         return None;
     };
     return Some(results.iter().sum());
-}
 
 fn main() {
     let input = &advent_of_code::read_file("inputs", 2);
@@ -48,7 +76,7 @@ mod tests {
     #[test]
     fn test_part_one() {
         let input = advent_of_code::read_file("examples", 2);
-        assert_eq!(part_one(&input), None);
+        assert_eq!(part_one(&input), Some(15));
     }
 
     #[test]
